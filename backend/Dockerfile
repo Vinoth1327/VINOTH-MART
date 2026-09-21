@@ -32,9 +32,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN mkdir -p build && \
+RUN mkdir build && \
     cd build && \
-    cmake .. && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
     cmake --build . --config Release
 
 EXPOSE 8080
