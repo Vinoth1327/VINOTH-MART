@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order Successful - Vinoth Mart</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(
+                135deg,
+                #87ceeb,
+                #e0f7ff
+            );
+        }
+
+        .success-box {
+            width: 450px;
+            background: white;
+            padding: 45px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #0288d1;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .home-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #03a9f4;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .home-btn:hover {
+            background: #0288d1;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="success-box">
+
+        <div class="icon">
+            ✅
+        </div>
+
+        <h1>
+            Order Placed Successfully!
+        </h1>
+
+        <p>
+            Thank you for shopping with
+            <strong>Vinoth Mart</strong>.
+            <br><br>
+            Your order has been received.
+        </p>
+
+        <button
+            class="home-btn"
+            onclick="goHome()">
+
+            🏠 Back to Vinoth Mart
+
+        </button>
+
+    </div>
+
+
+    <script>
+
+        function goHome() {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

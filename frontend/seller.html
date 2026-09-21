@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Login - Vinoth Mart</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #87ceeb, #e0f7ff);
+        }
+
+
+        .container {
+            width: 400px;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: #0288d1;
+            margin-bottom: 10px;
+        }
+
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+
+        input:focus {
+            border-color: #03a9f4;
+        }
+
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 10px;
+            background: #03a9f4;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .login-btn:hover {
+            background: #0288d1;
+        }
+
+
+        .create-account {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+
+        .create-account a,
+        .back {
+            color: #0288d1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">
+            🛒 Vinoth Mart
+        </div>
+
+
+        <h2>
+            🏪 Seller Login
+        </h2>
+
+
+        <p class="subtitle">
+            Login to manage your products
+        </p>
+
+
+        <form onsubmit="sellerLogin(event)">
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <div class="create-account">
+
+            Don't have a seller account?
+
+            <a href="register.html">
+                Create Account
+            </a>
+
+        </div>
+
+
+        <a href="index.html" class="back">
+            ← Back to Vinoth Mart
+        </a>
+
+    </div>
+
+
+    <script>
+
+        async function sellerLogin(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document.getElementById("email")
+                    .value
+                    .trim();
+
+
+            const password =
+                document.getElementById("password")
+                    .value;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:8080/api/login",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                email: email,
+
+                                password: password,
+
+                                role: "seller"
+
+                            })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (result.success) {
+
+                    localStorage.setItem(
+                        "vinothLoggedInUser",
+                        JSON.stringify(result.user)
+                    );
+
+
+                    alert(
+                        "✅ Seller login successful!"
+                    );
+
+
+                    window.location.href =
+                        "seller-dashboard.html";
+
+                } else {
+
+                    alert(
+                        "❌ " + result.message
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Seller login error:",
+                    error
+                );
+
+                alert(
+                    "❌ Cannot connect to Vinoth Mart server.\n\n" +
+                    "Please make sure the backend is running."
+                );
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Dashboard - Vinoth Mart</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #e0f7ff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0288d1;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logout {
+            background: white;
+            color: #0288d1;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 20px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            color: #0288d1;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .box h2 {
+            color: #0288d1;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .add-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #03a9f4;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #0288d1;
+        }
+
+        .product-item {
+            background: #f5fbff;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border-left: 5px solid #03a9f4;
+        }
+
+        .product-item h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .product-info {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .delete-btn {
+            margin-top: 10px;
+            padding: 7px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #f44336;
+            color: white;
+            cursor: pointer;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .box-header h2 {
+            margin-bottom: 0;
+        }
+
+        .refresh-btn {
+            background: #03a9f4;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .refresh-btn:hover {
+            background: #0288d1;
+        }
+
+        @media (max-width: 750px) {
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 15px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🛒 Vinoth Mart
+    </div>
+
+    <button
+        class="logout"
+        onclick="logout()">
+
+        Logout
+
+    </button>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <div class="welcome">
+
+        <h1>🏪 Seller Dashboard</h1>
+
+        <p>
+            Add and manage your products
+        </p>
+
+    </div>
+
+
+
+    <div class="dashboard">
+
+
+        <!-- Add Product -->
+
+        <div class="box">
+
+            <h2>➕ Add Product</h2>
+
+            <form onsubmit="addProduct(event)">
+
+                <label for="productName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Example: Sugar"
+                    required
+                >
+
+
+                <label for="price">
+                    Price (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="price"
+                    placeholder="Example: 50"
+                    min="1"
+                    required
+                >
+
+
+                <label for="quantity">
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    placeholder="Example: 20"
+                    min="1"
+                    required
+                >
+
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select id="category" required>
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Grocery">
+                        Grocery
+                    </option>
+
+                    <option value="Dairy">
+                        Dairy
+                    </option>
+
+                    <option value="Fruits">
+                        Fruits
+                    </option>
+
+                    <option value="Vegetables">
+                        Vegetables
+                    </option>
+
+                    <option value="Others">
+                        Others
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="add-btn">
+
+                    ➕ Add Product
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- Product List -->
+
+        <div class="box">
+
+            <div class="box-header">
+
+                <h2>
+                    📦 My Products
+                </h2>
+
+                <button
+                    class="refresh-btn"
+                    onclick="loadProducts()">
+
+                    🔄 Refresh
+
+                </button>
+
+            </div>
+
+            <div id="productList"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Seller Order Management -->
+
+    <div
+        class="box"
+        style="margin-top: 25px;">
+
+        <div class="box-header">
+
+            <h2>
+                📋 Orders Received
+            </h2>
+
+            <button
+                class="refresh-btn"
+                onclick="loadSellerOrders()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+        <div id="sellerOrderList"></div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    const API =
+        "http://127.0.0.1:8080";
+
+
+    let products = [];
+
+
+
+    // ==========================================
+    // GET LOGGED-IN SELLER
+    // ==========================================
+
+    function getLoggedInSeller() {
+
+        const loggedInUser =
+            JSON.parse(
+                localStorage.getItem(
+                    "vinothLoggedInUser"
+                )
+            );
+
+
+        if (
+            !loggedInUser ||
+            loggedInUser.role !== "seller"
+        ) {
+
+            return null;
+
+        }
+
+
+        return loggedInUser;
+
+    }
+
+
+
+    // ==========================================
+    // LOAD PRODUCTS FROM SQLITE BACKEND
+    // ==========================================
+
+    async function loadProducts() {
+
+        const productList =
+            document.getElementById(
+                "productList"
+            );
+
+
+        const loggedInUser =
+            getLoggedInSeller();
+
+
+        if (!loggedInUser) {
+
+            productList.innerHTML = `
+
+                <div class="empty">
+
+                    ❌ Seller login information
+                    not found.
+
+                    <br><br>
+
+                    Please login again.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        productList.innerHTML = `
+
+            <div class="empty">
+
+                🔄 Loading products...
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API + "/api/products"
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            if (!result.success) {
+
+                throw new Error(
+                    result.message ||
+                    "Failed to load products"
+                );
+
+            }
+
+
+            /*
+             * Get products from SQLite
+             * and show only this seller's products.
+             */
+
+            products =
+                (result.products || [])
+                    .filter(
+                        product =>
+                            Number(
+                                product.seller_id
+                            ) ===
+                            Number(
+                                loggedInUser.id
+                            )
+                    );
+
+
+            /*
+             * LocalStorage is only used as
+             * a temporary frontend copy.
+             * Database remains the source.
+             */
+
+            localStorage.setItem(
+                "sellerProducts",
+                JSON.stringify(products)
+            );
+
+
+            displayProducts();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Load products error:",
+                error
+            );
+
+
+            productList.innerHTML = `
+
+                <div class="empty">
+
+                    ❌ Cannot connect to
+                    Vinoth Mart server.
+
+                    <br><br>
+
+                    Please make sure the
+                    backend is running.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // ADD PRODUCT → SQLITE
+    // ==========================================
+
+    async function addProduct(event) {
+
+        event.preventDefault();
+
+
+        const loggedInUser =
+            getLoggedInSeller();
+
+
+        if (!loggedInUser) {
+
+            alert(
+                "❌ Seller login information not found.\n\nPlease login again."
+            );
+
+            return;
+
+        }
+
+
+        const name =
+            document
+                .getElementById(
+                    "productName"
+                )
+                .value
+                .trim();
+
+
+        const price =
+            Number(
+                document
+                    .getElementById(
+                        "price"
+                    )
+                    .value
+            );
+
+
+        const quantity =
+            Number(
+                document
+                    .getElementById(
+                        "quantity"
+                    )
+                    .value
+            );
+
+
+        const category =
+            document
+                .getElementById(
+                    "category"
+                )
+                .value;
+
+
+        if (
+            name === "" ||
+            price <= 0 ||
+            quantity <= 0 ||
+            category === ""
+        ) {
+
+            alert(
+                "❌ Please enter valid product details."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API + "/api/products",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            seller_id:
+                                Number(
+                                    loggedInUser.id
+                                ),
+
+                            name:
+                                name,
+
+                            price:
+                                price,
+
+                            quantity:
+                                quantity,
+
+                            category:
+                                category
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Add product response:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                alert(
+                    "❌ " +
+                    (
+                        result.message ||
+                        "Failed to add product."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * IMPORTANT:
+             * Do NOT depend on result.product.
+             *
+             * Reload from SQLite instead.
+             */
+
+            document
+                .querySelector("form")
+                .reset();
+
+
+            await loadProducts();
+
+
+            alert(
+                "✅ Product added successfully!"
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Add product error:",
+                error
+            );
+
+
+            alert(
+                "❌ Cannot connect to Vinoth Mart server.\n\n" +
+                "Please make sure the backend is running."
+            );
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // DISPLAY PRODUCTS
+    // ==========================================
+
+    function displayProducts() {
+
+        const list =
+            document.getElementById(
+                "productList"
+            );
+
+
+        list.innerHTML = "";
+
+
+        if (products.length === 0) {
+
+            list.innerHTML = `
+
+                <div class="empty">
+
+                    No products added yet.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        products.forEach(
+            product => {
+
+                list.innerHTML += `
+
+                    <div class="product-item">
+
+                        <h3>
+                            ${product.name}
+                        </h3>
+
+                        <div class="product-info">
+
+                            💰 Price:
+                            ₹${product.price}
+
+                            <br>
+
+                            📦 Quantity:
+                            ${product.quantity}
+
+                            <br>
+
+                            🏷️ Category:
+                            ${product.category}
+
+                            <br>
+
+                            🆔 Product ID:
+                            ${product.id}
+
+                        </div>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="
+                                editProduct(
+                                    ${product.id}
+                                )
+                            ">
+
+                            ✏️ Edit
+
+                        </button>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="
+                                deleteProduct(
+                                    ${product.id}
+                                )
+                            ">
+
+                            🗑️ Delete
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+
+    // ==========================================
+    // DELETE PRODUCT → SQLITE
+    // ==========================================
+
+    async function deleteProduct(id) {
+
+        const loggedInUser =
+            getLoggedInSeller();
+
+
+        if (!loggedInUser) {
+
+            alert(
+                "❌ Seller login information not found.\n\nPlease login again."
+            );
+
+            return;
+
+        }
+
+
+        const product =
+            products.find(
+                item =>
+                    Number(item.id) ===
+                    Number(id)
+            );
+
+
+        if (!product) {
+
+            alert(
+                "❌ Product not found!"
+            );
+
+            return;
+
+        }
+
+
+        const confirmDelete =
+            confirm(
+                `Are you sure you want to delete "${product.name}"?`
+            );
+
+
+        if (!confirmDelete) {
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API +
+                    "/api/products/delete",
+                    {
+
+                        method: "DELETE",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            id:
+                                Number(id)
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Delete product response:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                alert(
+                    "❌ " +
+                    (
+                        result.message ||
+                        "Failed to delete product."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Reload directly from SQLite.
+             */
+
+            await loadProducts();
+
+
+            alert(
+                "✅ Product deleted successfully!"
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Delete product error:",
+                error
+            );
+
+
+            alert(
+                "❌ Cannot connect to Vinoth Mart server.\n\n" +
+                "Please make sure the backend is running."
+            );
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // EDIT PRODUCT → SQLITE
+    // ==========================================
+
+    async function editProduct(id) {
+
+        const product =
+            products.find(
+                item =>
+                    Number(item.id) ===
+                    Number(id)
+            );
+
+
+        if (!product) {
+
+            alert(
+                "❌ Product not found!"
+            );
+
+            return;
+
+        }
+
+
+        const loggedInUser =
+            getLoggedInSeller();
+
+
+        if (!loggedInUser) {
+
+            alert(
+                "❌ Seller login information not found.\n\nPlease login again."
+            );
+
+            return;
+
+        }
+
+
+        const newName =
+            prompt(
+                "Enter Product Name:",
+                product.name
+            );
+
+
+        if (newName === null) {
+
+            return;
+
+        }
+
+
+        const newPrice =
+            prompt(
+                "Enter Price:",
+                product.price
+            );
+
+
+        if (newPrice === null) {
+
+            return;
+
+        }
+
+
+        const newQuantity =
+            prompt(
+                "Enter Quantity:",
+                product.quantity
+            );
+
+
+        if (newQuantity === null) {
+
+            return;
+
+        }
+
+
+        const newCategory =
+            prompt(
+                "Enter Category:",
+                product.category
+            );
+
+
+        if (newCategory === null) {
+
+            return;
+
+        }
+
+
+        const updatedName =
+            newName.trim();
+
+
+        const updatedPrice =
+            Number(newPrice);
+
+
+        const updatedQuantity =
+            Number(newQuantity);
+
+
+        const updatedCategory =
+            newCategory.trim();
+
+
+        if (
+            updatedName === "" ||
+            updatedPrice <= 0 ||
+            updatedQuantity < 0 ||
+            updatedCategory === ""
+        ) {
+
+            alert(
+                "❌ Please enter valid product details."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API +
+                    "/api/products/update",
+                    {
+
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            id:
+                                Number(
+                                    product.id
+                                ),
+
+                            seller_id:
+                                Number(
+                                    loggedInUser.id
+                                ),
+
+                            name:
+                                updatedName,
+
+                            price:
+                                updatedPrice,
+
+                            quantity:
+                                updatedQuantity,
+
+                            category:
+                                updatedCategory
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Edit product response:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                alert(
+                    "❌ " +
+                    (
+                        result.message ||
+                        "Failed to update product."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Reload from SQLite.
+             *
+             * This avoids depending on
+             * result.product being returned.
+             */
+
+            await loadProducts();
+
+
+            alert(
+                "✅ Product updated successfully!"
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Edit product error:",
+                error
+            );
+
+
+            alert(
+                "❌ Cannot connect to Vinoth Mart server.\n\n" +
+                "Please make sure the backend is running."
+            );
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    function logout() {
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+
+    // ==========================================
+    // SELLER ORDER MANAGEMENT
+    // BACKEND DATABASE
+    // ==========================================
+
+    async function loadSellerOrders() {
+
+        const loggedInUser =
+            getLoggedInSeller();
+
+
+        const orderList =
+            document.getElementById(
+                "sellerOrderList"
+            );
+
+
+        if (!orderList) {
+
+            return;
+
+        }
+
+
+        if (!loggedInUser) {
+
+            orderList.innerHTML = `
+
+                <div class="empty">
+
+                    ❌ Seller login information
+                    not found.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        orderList.innerHTML = `
+
+            <div class="empty">
+
+                🔄 Loading orders...
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API +
+                    "/api/orders/seller?seller_id=" +
+                    Number(
+                        loggedInUser.id
+                    )
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Seller orders from backend:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                orderList.innerHTML = `
+
+                    <div class="empty">
+
+                        ❌ ${result.message}
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            const orders =
+                result.orders || [];
+
+
+            orderList.innerHTML = "";
+
+
+            if (orders.length === 0) {
+
+                orderList.innerHTML = `
+
+                    <div class="empty">
+
+                        <h3>
+                            📋 No Orders Yet
+                        </h3>
+
+                        <br>
+
+                        <p>
+                            Orders placed by buyers
+                            will appear here.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            orders.forEach(
+                order => {
+
+                    let productsHTML = "";
+
+
+                    (order.products || [])
+                        .forEach(
+                            product => {
+
+                                productsHTML += `
+
+                                    <div
+                                        class="product-item"
+                                    >
+
+                                        🛍️
+                                        ${product.name}
+
+                                        —
+
+                                        ₹${product.price}
+
+                                        ×
+                                        ${product.quantity}
+
+                                    </div>
+
+                                `;
+
+                            }
+                        );
+
+
+                    orderList.innerHTML += `
+
+                        <div class="product-item">
+
+                            <h3>
+                                🧾
+                                Order #${order.id}
+                            </h3>
+
+
+                            <div class="product-info">
+
+                                👤 Customer:
+                                ${order.customer_name}
+
+                                <br>
+
+                                📱 Mobile:
+                                ${order.mobile}
+
+                                <br>
+
+                                📍 Address:
+                                ${order.address},
+                                ${order.city}
+                                - ${order.pincode}
+
+                                <br>
+
+                                💳 Payment:
+                                ${order.payment}
+
+                                <br>
+
+                                📅 Date:
+                                ${order.date}
+
+                                <br><br>
+
+
+                                <strong>
+                                    🛒 Products:
+                                </strong>
+
+
+                                ${productsHTML}
+
+
+                                <br>
+
+
+                                <strong>
+                                    💰 Total:
+                                    ₹${order.total}
+                                </strong>
+
+
+                                <br>
+
+
+                                📌 Status:
+                                ${order.status}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Load seller orders error:",
+                error
+            );
+
+
+            orderList.innerHTML = `
+
+                <div class="empty">
+
+                    ❌ Cannot connect to
+                    Vinoth Mart server.
+
+                    <br><br>
+
+                    Please make sure the backend
+                    is running.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // INITIAL LOAD
+    // ==========================================
+
+    loadProducts();
+
+    loadSellerOrders();
+
+
+</script>
+
+
+</body>
+
+</html>

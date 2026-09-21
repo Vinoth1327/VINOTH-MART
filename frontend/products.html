@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Vinoth Mart - Products</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #e0f7ff;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #0288d1;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .orders-btn {
+            background: white;
+            color: #0288d1;
+
+            padding: 10px 18px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            border: none;
+
+            font-size: 14px;
+        }
+
+        .orders-btn:hover {
+            background: #e1f5fe;
+        }
+
+        .cart {
+            background: white;
+            color: #0288d1;
+
+            padding: 10px 18px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        /* MAIN */
+
+        .main {
+            padding: 35px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #0288d1;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        /* SEARCH AND FILTER */
+
+        .search-box {
+            max-width: 900px;
+
+            margin: 0 auto 30px;
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.1);
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+
+            min-width: 220px;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #03a9f4;
+        }
+
+        .category-select {
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            min-width: 180px;
+
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            padding: 13px 18px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #555;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background: #333;
+        }
+
+        /* PRODUCTS */
+
+        .products {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 25px;
+
+            max-width: 1100px;
+
+            margin: auto;
+        }
+
+        .product {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-icon {
+            font-size: 60px;
+
+            margin-bottom: 15px;
+        }
+
+        .product h2 {
+            color: #333;
+
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #666;
+
+            margin-bottom: 8px;
+        }
+
+        .price {
+            color: #0288d1;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin: 12px 0;
+        }
+
+        .buy-btn {
+            width: 100%;
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #03a9f4;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .buy-btn:hover {
+            background: #0288d1;
+        }
+
+        .seller-label {
+            display: inline-block;
+
+            background: #e1f5fe;
+
+            color: #0288d1;
+
+            padding: 5px 10px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            margin-top: 8px;
+        }
+
+        /* REVIEWS */
+
+        .review-section {
+            margin-top: 20px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #ddd;
+
+            text-align: left;
+        }
+
+        .review-title {
+            color: #0288d1;
+
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            display: flex;
+
+            gap: 3px;
+
+            margin-bottom: 10px;
+        }
+
+        .star {
+            font-size: 25px;
+
+            cursor: pointer;
+
+            color: #ccc;
+        }
+
+        .star.selected {
+            color: #ffc107;
+        }
+
+        .review-input {
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            resize: none;
+
+            outline: none;
+
+            margin-bottom: 8px;
+        }
+
+        .review-input:focus {
+            border-color: #03a9f4;
+        }
+
+        .review-btn {
+            width: 100%;
+
+            padding: 9px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #0288d1;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .review-btn:hover {
+            background: #0277bd;
+        }
+
+        .review-list {
+            margin-top: 15px;
+        }
+
+        .review-item {
+            background: #f5fbff;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+        }
+
+        .review-stars {
+            color: #ffc107;
+
+            margin-bottom: 4px;
+        }
+
+        .review-text {
+            color: #555;
+
+            word-wrap: break-word;
+        }
+
+        .no-review {
+            color: #888;
+
+            font-size: 13px;
+        }
+
+        .empty {
+            text-align: center;
+
+            color: #777;
+
+            padding: 30px;
+
+            grid-column: 1 / -1;
+        }
+
+        /* ORDER HISTORY */
+
+        .order-history {
+            display: none;
+
+            max-width: 900px;
+
+            margin: 35px auto;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .order-history h2 {
+            color: #0288d1;
+
+            margin-bottom: 20px;
+
+            text-align: center;
+        }
+
+        .order-card {
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            padding: 18px;
+
+            margin-bottom: 15px;
+
+            background: white;
+        }
+
+        .order-card h3 {
+            color: #0288d1;
+
+            margin-bottom: 12px;
+        }
+
+        .order-card p {
+            margin: 7px 0;
+
+            color: #555;
+        }
+
+        .order-status {
+            display: inline-block;
+
+            background: #e1f5fe;
+
+            color: #0288d1;
+
+            padding: 5px 12px;
+
+            border-radius: 15px;
+
+            font-weight: bold;
+        }
+
+        .order-products {
+            margin-top: 10px;
+
+            padding: 12px;
+
+            background: #f5fbff;
+
+            border-radius: 8px;
+
+            line-height: 1.6;
+        }
+
+        .logout {
+            display: block;
+
+            margin: 35px auto 0;
+
+            padding: 12px 25px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #555;
+
+            color: white;
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .header-buttons {
+                gap: 5px;
+            }
+
+            .orders-btn {
+                padding: 8px 10px;
+
+                font-size: 12px;
+            }
+
+            .cart {
+                padding: 8px 10px;
+
+                font-size: 12px;
+            }
+
+            .search-box {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .search-input,
+            .category-select,
+            .clear-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">
+        🛒 Vinoth Mart
+    </div>
+
+    <div class="header-buttons">
+
+        <button
+            type="button"
+            class="orders-btn"
+            onclick="showOrderHistory(); return false;"
+        >
+            📦 My Orders
+        </button>
+
+        <span
+            class="cart"
+            onclick="openCart()"
+        >
+            🛒 Cart:
+            <span id="cartCount">0</span>
+        </span>
+
+    </div>
+
+</header>
+
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+
+    <div class="welcome">
+
+        <h1>
+            Welcome Buyer! 👋
+        </h1>
+
+        <p>
+            Choose your favourite products
+        </p>
+
+    </div>
+
+
+
+    <!-- SEARCH AND FILTER -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="🔍 Search products..."
+            oninput="filterProducts()"
+        >
+
+
+        <select
+            id="categoryFilter"
+            class="category-select"
+            onchange="filterProducts()"
+        >
+
+            <option value="all">
+                All Categories
+            </option>
+
+            <option value="food">
+                Food
+            </option>
+
+            <option value="dairy">
+                Dairy
+            </option>
+
+            <option value="fruits">
+                Fruits
+            </option>
+
+            <option value="bakery">
+                Bakery
+            </option>
+
+            <option value="grocery">
+                Grocery
+            </option>
+
+            <option value="other">
+                Other
+            </option>
+
+        </select>
+
+
+        <button
+            type="button"
+            class="clear-btn"
+            onclick="clearFilters()"
+        >
+            🔄 Clear
+        </button>
+
+    </div>
+
+
+
+    <!-- PRODUCTS -->
+
+    <div
+        class="products"
+        id="productContainer"
+    >
+
+    </div>
+
+
+
+    <!-- ORDER HISTORY -->
+
+    <div
+        class="order-history"
+        id="orderHistory"
+    >
+
+        <h2>
+            📦 My Order History
+        </h2>
+
+        <div id="orderList">
+
+            Loading orders...
+
+        </div>
+
+    </div>
+
+
+
+    <button
+        type="button"
+        class="logout"
+        onclick="logout()"
+    >
+
+        Logout
+
+    </button>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   CART
+========================= */
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("vinothCart")
+    ) || [];
+
+
+
+/* =========================
+   SELLER PRODUCTS
+========================= */
+
+let sellerProducts =
+    JSON.parse(
+        localStorage.getItem("sellerProducts")
+    ) || [];
+
+
+
+/* =========================
+   DEFAULT PRODUCTS
+========================= */
+
+const defaultProducts = [
+
+    {
+        id: 1,
+        name: "Rice",
+        price: 60,
+        description: "Premium quality rice",
+        icon: "🍚",
+        category: "grocery"
+    },
+
+    {
+        id: 2,
+        name: "Milk",
+        price: 50,
+        description: "Fresh dairy milk",
+        icon: "🥛",
+        category: "dairy"
+    },
+
+    {
+        id: 3,
+        name: "Apple",
+        price: 120,
+        description: "Fresh red apples",
+        icon: "🍎",
+        category: "fruits"
+    },
+
+    {
+        id: 4,
+        name: "Bread",
+        price: 40,
+        description: "Fresh bakery bread",
+        icon: "🍞",
+        category: "bakery"
+    },
+
+    {
+        id: 5,
+        name: "Eggs",
+        price: 70,
+        description: "Fresh farm eggs",
+        icon: "🥚",
+        category: "food"
+    },
+
+    {
+        id: 6,
+        name: "Cooking Oil",
+        price: 150,
+        description: "Premium cooking oil",
+        icon: "🧴",
+        category: "grocery"
+    }
+
+];
+
+
+
+/* =========================
+   GET ALL PRODUCTS
+========================= */
+
+function getAllProducts() {
+
+    const allProducts = [];
+
+
+    defaultProducts.forEach(product => {
+
+        allProducts.push({
+
+            id: product.id,
+
+            name: product.name,
+
+            price: product.price,
+
+            description: product.description,
+
+            icon: product.icon,
+
+            category: product.category,
+
+            sellerProduct: false
+
+        });
+
+    });
+
+
+    sellerProducts.forEach(product => {
+
+        allProducts.push({
+
+            id: product.id,
+
+            name: product.name,
+
+            price: product.price,
+
+            description:
+                product.category +
+                " | Available: " +
+                product.quantity,
+
+            icon: "🛍️",
+
+            category:
+                String(product.category || "other")
+                    .toLowerCase(),
+
+            sellerProduct: true
+
+        });
+
+    });
+
+
+    return allProducts;
+
+}
+
+
+
+/* =========================
+   DISPLAY PRODUCTS
+========================= */
+
+function displayProducts(productList) {
+
+    const container =
+        document.getElementById(
+            "productContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (productList.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <h3>
+                    😔 No products found
+                </h3>
+
+                <br>
+
+                <p>
+                    Try another search or category.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    productList.forEach(product => {
+
+        createProductCard(
+            product,
+            product.sellerProduct
+        );
+
+    });
+
+}
+
+
+
+/* =========================
+   CREATE PRODUCT CARD
+========================= */
+
+function createProductCard(
+    product,
+    sellerProduct
+) {
+
+    const container =
+        document.getElementById(
+            "productContainer"
+        );
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className = "product";
+
+
+    const icon =
+        product.icon || "🛍️";
+
+
+    card.innerHTML = `
+
+        <div class="product-icon">
+            ${icon}
+        </div>
+
+        <h2>
+            ${product.name}
+        </h2>
+
+        <p class="description">
+            ${product.description}
+        </p>
+
+        <div class="price">
+            ₹${product.price}
+        </div>
+
+        ${
+            sellerProduct
+            ?
+            `<div class="seller-label">
+                Seller Product
+            </div>`
+            :
+            ""
+        }
+
+        <br>
+
+        <button
+            type="button"
+            class="buy-btn"
+        >
+            🛒 Add to Cart
+        </button>
+
+
+        <div class="review-section">
+
+            <div class="review-title">
+                ⭐ Product Reviews
+            </div>
+
+            <div class="stars">
+
+                <span
+                    class="star"
+                    data-rating="1"
+                >★</span>
+
+                <span
+                    class="star"
+                    data-rating="2"
+                >★</span>
+
+                <span
+                    class="star"
+                    data-rating="3"
+                >★</span>
+
+                <span
+                    class="star"
+                    data-rating="4"
+                >★</span>
+
+                <span
+                    class="star"
+                    data-rating="5"
+                >★</span>
+
+            </div>
+
+            <textarea
+                class="review-input"
+                rows="3"
+                placeholder="Write your review..."
+            ></textarea>
+
+            <button
+                type="button"
+                class="review-btn"
+            >
+                Submit Review
+            </button>
+
+            <div class="review-list"></div>
+
+        </div>
+
+    `;
+
+
+    /* CART BUTTON */
+
+    const button =
+        card.querySelector(
+            ".buy-btn"
+        );
+
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            addToCart(product);
+
+        }
+    );
+
+
+
+    /* REVIEW SYSTEM */
+
+    let selectedRating = 0;
+
+
+    const stars =
+        card.querySelectorAll(
+            ".star"
+        );
+
+
+    stars.forEach(star => {
+
+        star.addEventListener(
+            "click",
+            function () {
+
+                selectedRating =
+                    Number(
+                        this.dataset.rating
+                    );
+
+
+                stars.forEach(
+                    currentStar => {
+
+                        const rating =
+                            Number(
+                                currentStar.dataset.rating
+                            );
+
+
+                        if (
+                            rating <=
+                            selectedRating
+                        ) {
+
+                            currentStar.classList.add(
+                                "selected"
+                            );
+
+                        } else {
+
+                            currentStar.classList.remove(
+                                "selected"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    });
+
+
+    const reviewButton =
+        card.querySelector(
+            ".review-btn"
+        );
+
+
+    reviewButton.addEventListener(
+        "click",
+        function () {
+
+            submitReview(
+                product,
+                selectedRating,
+                card
+            );
+
+        }
+    );
+
+
+    displayReviews(
+        product,
+        card
+    );
+
+
+    container.appendChild(card);
+
+}
+
+
+
+/* =========================
+   SUBMIT REVIEW - BACKEND
+========================= */
+
+async function submitReview(
+    product,
+    rating,
+    card
+) {
+
+    const reviewInput =
+        card.querySelector(
+            ".review-input"
+        );
+
+
+    const reviewText =
+        reviewInput.value.trim();
+
+
+    if (rating === 0) {
+
+        alert(
+            "Please select a star rating ⭐"
+        );
+
+        return;
+
+    }
+
+
+    if (reviewText === "") {
+
+        alert(
+            "Please write a review."
+        );
+
+        return;
+
+    }
+
+
+    const loggedInUser =
+        JSON.parse(
+            localStorage.getItem(
+                "vinothLoggedInUser"
+            )
+        ) || null;
+
+
+    if (
+        !loggedInUser ||
+        !loggedInUser.id
+    ) {
+
+        alert(
+            "Please login as a buyer first."
+        );
+
+        return;
+
+    }
+
+
+    let productId =
+        product.id;
+
+
+    if (!product.sellerProduct) {
+
+        const backendProduct =
+            sellerProducts.find(p =>
+
+                String(p.name).toLowerCase() ===
+                String(product.name).toLowerCase()
+
+                &&
+
+                Number(p.price) ===
+                Number(product.price)
+
+            );
+
+
+        if (backendProduct) {
+
+            productId =
+                backendProduct.id;
+
+        }
+
+    }
+
+
+    if (!productId) {
+
+        alert(
+            "Product ID not found."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8080/api/reviews",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        product_id:
+                            Number(productId),
+
+                        buyer_id:
+                            Number(loggedInUser.id),
+
+                        rating:
+                            Number(rating),
+
+                        review_text:
+                            reviewText
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            alert(
+                result.message ||
+                "Failed to submit review."
+            );
+
+            return;
+
+        }
+
+
+        reviewInput.value = "";
+
+
+        alert(
+            "⭐ Review submitted successfully!"
+        );
+
+
+        await displayReviews(
+            product,
+            card
+        );
+
+
+        card.querySelectorAll(
+            ".star"
+        ).forEach(star => {
+
+            star.classList.remove(
+                "selected"
+            );
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Review submission error:",
+            error
+        );
+
+
+        alert(
+            "Backend connection failed."
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   DISPLAY REVIEWS - BACKEND
+========================= */
+
+async function displayReviews(
+    product,
+    card
+) {
+
+    const reviewList =
+        card.querySelector(
+            ".review-list"
+        );
+
+
+    let productId =
+        product.id;
+
+
+    if (!product.sellerProduct) {
+
+        const backendProduct =
+            sellerProducts.find(p =>
+
+                String(p.name).toLowerCase() ===
+                String(product.name).toLowerCase()
+
+                &&
+
+                Number(p.price) ===
+                Number(product.price)
+
+            );
+
+
+        if (backendProduct) {
+
+            productId =
+                backendProduct.id;
+
+        }
+
+    }
+
+
+    reviewList.innerHTML = `
+
+        <div class="no-review">
+            Loading reviews...
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8080/api/reviews?product_id=" +
+                Number(productId)
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            !result.success ||
+            !result.reviews ||
+            result.reviews.length === 0
+        ) {
+
+            reviewList.innerHTML = `
+
+                <div class="no-review">
+                    No reviews yet.
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        reviewList.innerHTML = "";
+
+
+        result.reviews.forEach(
+            review => {
+
+                let stars = "";
+
+
+                for (
+                    let i = 1;
+                    i <= 5;
+                    i++
+                ) {
+
+                    stars +=
+                        i <=
+                        Number(review.rating)
+                        ? "★"
+                        : "☆";
+
+                }
+
+
+                reviewList.innerHTML += `
+
+                    <div class="review-item">
+
+                        <div class="review-stars">
+                            ${stars}
+                        </div>
+
+                        <strong>
+                            👤 ${review.reviewer}
+                        </strong>
+
+                        <p class="review-text">
+                            ${review.review_text}
+                        </p>
+
+                        <small>
+                            ${review.review_date}
+                        </small>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Review loading error:",
+            error
+        );
+
+
+        reviewList.innerHTML = `
+
+            <div class="no-review">
+                Unable to load reviews.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================
+   SEARCH + FILTER
+========================= */
+
+function filterProducts() {
+
+    const searchText =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const selectedCategory =
+        document.getElementById(
+            "categoryFilter"
+        ).value;
+
+
+    const allProducts =
+        getAllProducts();
+
+
+    const filteredProducts =
+        allProducts.filter(
+            product => {
+
+                const matchesSearch =
+                    product.name
+                        .toLowerCase()
+                        .includes(
+                            searchText
+                        );
+
+
+                const productCategory =
+                    String(
+                        product.category ||
+                        "other"
+                    )
+                    .toLowerCase();
+
+
+                const matchesCategory =
+                    selectedCategory === "all" ||
+                    productCategory ===
+                        selectedCategory;
+
+
+                return (
+                    matchesSearch &&
+                    matchesCategory
+                );
+
+            }
+        );
+
+
+    displayProducts(
+        filteredProducts
+    );
+
+}
+
+
+
+/* =========================
+   CLEAR FILTERS
+========================= */
+
+function clearFilters() {
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "all";
+
+
+    displayProducts(
+        getAllProducts()
+    );
+
+}
+
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+function addToCart(product) {
+
+    const cartItem = {
+
+        id:
+            Number(product.id),
+
+        name:
+            product.name,
+
+        price:
+            Number(product.price),
+
+        quantity:
+            1
+
+    };
+
+
+    cart.push(
+        cartItem
+    );
+
+
+    localStorage.setItem(
+        "vinothCart",
+        JSON.stringify(cart)
+    );
+
+
+    updateCartCount();
+
+
+    alert(
+        product.name +
+        " added to cart! 🛒"
+    );
+
+}
+
+
+
+/* =========================
+   CART COUNT
+========================= */
+
+function updateCartCount() {
+
+    document.getElementById(
+        "cartCount"
+    ).innerText =
+        cart.length;
+
+}
+
+
+
+/* =========================
+   OPEN CART
+========================= */
+
+function openCart() {
+
+    window.location.href =
+        "cart.html";
+
+}
+
+
+
+/* =========================
+   BUYER ORDER HISTORY
+========================= */
+
+async function showOrderHistory() {
+
+    console.log(
+        "My Orders button clicked"
+    );
+
+
+    const orderHistory =
+        document.getElementById(
+            "orderHistory"
+        );
+
+
+    const orderList =
+        document.getElementById(
+            "orderList"
+        );
+
+
+    if (
+        !orderHistory ||
+        !orderList
+    ) {
+
+        alert(
+            "Order History section not found!"
+        );
+
+        return;
+
+    }
+
+
+    /* SHOW ORDER HISTORY */
+
+    orderHistory.style.display =
+        "block";
+
+
+    /* SCROLL TO ORDER HISTORY */
+
+    orderHistory.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+
+    orderList.innerHTML = `
+
+        <p>
+            ⏳ Loading your orders...
+        </p>
+
+    `;
+
+
+    /* GET LOGGED-IN BUYER */
+
+    const loggedInUser =
+        JSON.parse(
+            localStorage.getItem(
+                "vinothLoggedInUser"
+            )
+        );
+
+
+    if (
+        !loggedInUser ||
+        !loggedInUser.id
+    ) {
+
+        orderList.innerHTML = `
+
+            <div class="empty">
+
+                <h3>
+                    ⚠️ Buyer login not found
+                </h3>
+
+                <br>
+
+                <p>
+                    Please login again as a Buyer.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    console.log(
+        "Buyer ID:",
+        loggedInUser.id
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                "http://127.0.0.1:8080/api/orders/buyer?buyer_id=" +
+                Number(loggedInUser.id)
+
+            );
+
+
+        console.log(
+            "Order API Status:",
+            response.status
+        );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Order API Response:",
+            result
+        );
+
+
+        if (
+            !result.success ||
+            !result.orders ||
+            result.orders.length === 0
+        ) {
+
+            orderList.innerHTML = `
+
+                <div class="empty">
+
+                    <h3>
+                        📦 No orders yet
+                    </h3>
+
+                    <br>
+
+                    <p>
+                        Your purchased orders
+                        will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* DISPLAY ORDERS */
+
+        orderList.innerHTML = "";
+
+
+        result.orders.forEach(
+            order => {
+
+                let productsHTML = "";
+
+
+                if (
+                    order.products &&
+                    order.products.length > 0
+                ) {
+
+                    order.products.forEach(
+                        product => {
+
+                            productsHTML += `
+
+                                <div
+                                    class="order-products"
+                                >
+
+                                    🛍️
+                                    <strong>
+                                        ${product.name}
+                                    </strong>
+
+                                    <br>
+
+                                    Quantity:
+                                    ${product.quantity}
+
+                                    <br>
+
+                                    Price:
+                                    ₹${product.price}
+
+                                </div>
+
+                            `;
+
+                        }
+                    );
+
+                } else {
+
+                    productsHTML = `
+
+                        <div class="order-products">
+
+                            No product details available.
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                orderList.innerHTML += `
+
+                    <div class="order-card">
+
+                        <h3>
+                            🧾 Order #${order.id}
+                        </h3>
+
+
+                        <p>
+
+                            📅
+                            <strong>
+                                Date:
+                            </strong>
+
+                            ${order.date}
+
+                        </p>
+
+
+                        <p>
+
+                            💰
+                            <strong>
+                                Total:
+                            </strong>
+
+                            ₹${order.total}
+
+                        </p>
+
+
+                        <p>
+
+                            💳
+                            <strong>
+                                Payment:
+                            </strong>
+
+                            ${order.payment}
+
+                        </p>
+
+
+                        <p>
+
+                            📍
+                            <strong>
+                                Address:
+                            </strong>
+
+                            ${order.address},
+                            ${order.city}
+                            -
+                            ${order.pincode}
+
+                        </p>
+
+
+                        <p>
+
+                            📱
+                            <strong>
+                                Mobile:
+                            </strong>
+
+                            ${order.mobile}
+
+                        </p>
+
+
+                        <p>
+
+                            📦
+                            <strong>
+                                Status:
+                            </strong>
+
+                            <span
+                                class="order-status"
+                            >
+
+                                ${order.status}
+
+                            </span>
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                🛍️ Products:
+                            </strong>
+
+                        </p>
+
+
+                        ${productsHTML}
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Order History Error:",
+            error
+        );
+
+
+        orderList.innerHTML = `
+
+            <div class="empty">
+
+                <h3>
+                    ❌ Backend connection failed
+                </h3>
+
+                <br>
+
+                <p>
+                    Make sure Vinoth Mart
+                    backend is running.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout() {
+
+    localStorage.removeItem(
+        "vinothCart"
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+/* =========================
+   LOAD BACKEND PRODUCTS
+========================= */
+
+async function loadBackendProducts() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:8080/api/products"
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (result.success) {
+
+            sellerProducts =
+                result.products || [];
+
+
+            localStorage.setItem(
+                "sellerProducts",
+                JSON.stringify(
+                    sellerProducts
+                )
+            );
+
+
+            displayProducts(
+                getAllProducts()
+            );
+
+        } else {
+
+            console.error(
+                "Failed to load products:",
+                result.message
+            );
+
+
+            displayProducts(
+                getAllProducts()
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Backend product loading error:",
+            error
+        );
+
+
+        displayProducts(
+            getAllProducts()
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+loadBackendProducts();
+
+updateCartCount();
+
+
+</script>
+
+
+</body>
+
+</html>

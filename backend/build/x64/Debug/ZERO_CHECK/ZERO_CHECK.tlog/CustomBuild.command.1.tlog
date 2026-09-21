@@ -1,0 +1,10 @@
+^C:\VINOTHMART\BACKEND\BUILD\CMAKEFILES\F4FE46DBB6248AA8E02B0439ABDDC8D1\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/VinothMart/backend -BC:/VinothMart/backend/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/VinothMart/backend/build/VinothMartBackend.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

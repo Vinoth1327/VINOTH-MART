@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - Vinoth Mart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #e0f7ff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0288d1;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #0288d1;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0288d1;
+            margin-bottom: 25px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .box h2 {
+            color: #0288d1;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .payment-option input {
+            width: auto;
+        }
+
+        .order-summary {
+            background: #f5fbff;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .total {
+            border-top: 1px solid #ccc;
+            margin-top: 10px;
+            padding-top: 12px;
+            font-size: 21px;
+            font-weight: bold;
+            color: #0288d1;
+        }
+
+        .place-order {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #03a9f4;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .place-order:hover {
+            background: #0288d1;
+        }
+
+        .place-order:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🛒 Vinoth Mart
+    </div>
+
+    <button class="back-btn" onclick="goCart()">
+        ← Back to Cart
+    </button>
+
+</header>
+
+
+<div class="container">
+
+    <h1>📦 Checkout</h1>
+
+
+    <!-- Delivery Details -->
+
+    <div class="box">
+
+        <h2>📍 Delivery Details</h2>
+
+        <label>Full Name</label>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter your full name"
+        >
+
+
+        <label>Mobile Number</label>
+
+        <input
+            type="tel"
+            id="mobile"
+            placeholder="Enter your mobile number"
+        >
+
+
+        <label>Delivery Address</label>
+
+        <textarea
+            id="address"
+            placeholder="Enter your complete address"
+        ></textarea>
+
+
+        <label>City</label>
+
+        <input
+            type="text"
+            id="city"
+            placeholder="Enter your city"
+        >
+
+
+        <label>PIN Code</label>
+
+        <input
+            type="text"
+            id="pincode"
+            placeholder="Enter PIN code"
+        >
+
+    </div>
+
+
+    <!-- Payment -->
+
+    <div class="box">
+
+        <h2>💳 Payment Method</h2>
+
+        <div class="payment-option">
+
+            <input
+                type="radio"
+                name="payment"
+                value="Cash on Delivery"
+                checked
+            >
+
+            <span>💵 Cash on Delivery</span>
+
+        </div>
+
+
+        <div class="payment-option">
+
+            <input
+                type="radio"
+                name="payment"
+                value="UPI"
+            >
+
+            <span>📱 UPI</span>
+
+        </div>
+
+
+        <div class="payment-option">
+
+            <input
+                type="radio"
+                name="payment"
+                value="Card"
+            >
+
+            <span>💳 Credit / Debit Card</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Order Summary -->
+
+    <div class="box">
+
+        <h2>🛒 Order Summary</h2>
+
+        <div
+            id="orderSummary"
+            class="order-summary">
+        </div>
+
+    </div>
+
+
+    <button
+        id="placeOrderButton"
+        class="place-order"
+        onclick="placeOrder()">
+
+        ✅ Place Order
+
+    </button>
+
+</div>
+
+
+<script>
+
+const API = "http://127.0.0.1:8080";
+
+
+// Get logged-in buyer
+const loggedInUser =
+    JSON.parse(
+        localStorage.getItem("vinothLoggedInUser")
+    );
+
+
+// Check login
+if (
+    !loggedInUser ||
+    !loggedInUser.id
+) {
+
+    alert("Please login first.");
+
+    window.location.href =
+        "buyer.html";
+}
+
+
+// Get cart
+let cart =
+    JSON.parse(
+        localStorage.getItem("vinothCart")
+    ) || [];
+
+
+// Display order summary
+function displaySummary() {
+
+    const summary =
+        document.getElementById("orderSummary");
+
+    if (cart.length === 0) {
+
+        summary.innerHTML =
+            "<p>Your cart is empty.</p>";
+
+        return;
+    }
+
+
+    let total = 0;
+
+    summary.innerHTML = "";
+
+
+    cart.forEach(product => {
+
+        const productName =
+            typeof product === "object"
+                ? product.name
+                : product;
+
+
+        const productPrice =
+            typeof product === "object"
+                ? Number(product.price)
+                : getOldPrice(product);
+
+
+        const quantity =
+            typeof product === "object" &&
+            product.quantity
+                ? Number(product.quantity)
+                : 1;
+
+
+        const itemTotal =
+            productPrice * quantity;
+
+
+        total += itemTotal;
+
+
+        summary.innerHTML += `
+
+            <div class="summary-row">
+
+                <span>
+                    ${productName}
+                    ${quantity > 1 ? " × " + quantity : ""}
+                </span>
+
+                <span>
+                    ₹${itemTotal}
+                </span>
+
+            </div>
+
+        `;
+
+    });
+
+
+    summary.innerHTML += `
+
+        <div class="summary-row total">
+
+            <span>
+                Total
+            </span>
+
+            <span>
+                ₹${total}
+            </span>
+
+        </div>
+
+    `;
+}
+
+
+// Old product prices
+function getOldPrice(product) {
+
+    const prices = {
+
+        "Rice": 60,
+        "Milk": 50,
+        "Apple": 120,
+        "Bread": 40,
+        "Eggs": 70,
+        "Cooking Oil": 150
+
+    };
+
+    return prices[product] || 0;
+}
+
+
+// Calculate total
+function calculateTotal() {
+
+    return cart.reduce(
+        (sum, product) => {
+
+            const price =
+                typeof product === "object"
+                    ? Number(product.price)
+                    : getOldPrice(product);
+
+
+            const quantity =
+                typeof product === "object" &&
+                product.quantity
+                    ? Number(product.quantity)
+                    : 1;
+
+
+            return sum + (price * quantity);
+
+        },
+        0
+    );
+}
+
+
+// Back to cart
+function goCart() {
+
+    window.location.href =
+        "cart.html";
+
+}
+
+
+// Place order
+async function placeOrder() {
+
+    const button =
+        document.getElementById(
+            "placeOrderButton"
+        );
+
+
+    const name =
+        document
+            .getElementById("name")
+            .value
+            .trim();
+
+
+    const mobile =
+        document
+            .getElementById("mobile")
+            .value
+            .trim();
+
+
+    const address =
+        document
+            .getElementById("address")
+            .value
+            .trim();
+
+
+    const city =
+        document
+            .getElementById("city")
+            .value
+            .trim();
+
+
+    const pincode =
+        document
+            .getElementById("pincode")
+            .value
+            .trim();
+
+
+    if (
+        name === "" ||
+        mobile === "" ||
+        address === "" ||
+        city === "" ||
+        pincode === ""
+    ) {
+
+        alert(
+            "Please fill all delivery details."
+        );
+
+        return;
+    }
+
+
+    if (cart.length === 0) {
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return;
+    }
+
+
+    const paymentElement =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+
+    const payment =
+        paymentElement
+            ? paymentElement.value
+            : "Cash on Delivery";
+
+
+    /*
+       Convert cart into backend order items
+    */
+
+    const items = cart.map(product => {
+
+        const productId =
+            product.id !== undefined
+                ? product.id
+                : product.product_id;
+
+
+        const price =
+            typeof product === "object"
+                ? Number(product.price)
+                : getOldPrice(product);
+
+
+        const quantity =
+            typeof product === "object" &&
+            product.quantity
+                ? Number(product.quantity)
+                : 1;
+
+
+        return {
+
+            product_id: Number(productId),
+
+            quantity: quantity,
+
+            price: price
+
+        };
+
+    });
+
+
+    // Make sure product IDs exist
+    const invalidProduct =
+        items.some(
+            item =>
+                !item.product_id ||
+                item.product_id <= 0
+        );
+
+
+    if (invalidProduct) {
+
+        alert(
+            "Product information is missing. Please return to the products page and add the products again."
+        );
+
+        return;
+    }
+
+
+    const total =
+        calculateTotal();
+
+
+    // Disable button
+    button.disabled = true;
+
+    button.innerText =
+        "⏳ Placing Order...";
+
+
+    /*
+       Send order to C++ backend
+    */
+
+    try {
+
+        const response =
+            await fetch(
+                API + "/api/orders",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            buyer_id:
+                                Number(
+                                    loggedInUser.id
+                                ),
+
+                            customer_name:
+                                name,
+
+                            mobile:
+                                mobile,
+
+                            address:
+                                address,
+
+                            city:
+                                city,
+
+                            pincode:
+                                pincode,
+
+                            payment:
+                                payment,
+
+                            total:
+                                total,
+
+                            items:
+                                items
+
+                        })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Backend order response:",
+            result
+        );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result.message ||
+                "Order could not be placed."
+            );
+
+        }
+
+
+        /*
+           Backend order successful
+        */
+
+
+        // Save local copy for compatibility
+        const orders =
+            JSON.parse(
+                localStorage.getItem(
+                    "vinothOrders"
+                )
+            ) || [];
+
+
+        const localOrder = {
+
+            id:
+                result.order_id ||
+                Date.now(),
+
+            buyer_id:
+                Number(
+                    loggedInUser.id
+                ),
+
+            customerName:
+                name,
+
+            mobile:
+                mobile,
+
+            address:
+                address,
+
+            city:
+                city,
+
+            pincode:
+                pincode,
+
+            payment:
+                payment,
+
+            products:
+                cart,
+
+            total:
+                total,
+
+            date:
+                new Date()
+                    .toLocaleString(),
+
+            status:
+                "Placed"
+
+        };
+
+
+        orders.push(
+            localOrder
+        );
+
+
+        localStorage.setItem(
+            "vinothOrders",
+            JSON.stringify(orders)
+        );
+
+
+        // Clear cart
+        localStorage.removeItem(
+            "vinothCart"
+        );
+
+
+        alert(
+            "🎉 Order placed successfully!\n\n" +
+            "Order ID: " +
+            (
+                result.order_id ||
+                "Created"
+            )
+        );
+
+
+        window.location.href =
+            "order-success.html";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Order error:",
+            error
+        );
+
+
+        alert(
+            "❌ Order failed.\n\n" +
+            error.message
+        );
+
+
+        button.disabled = false;
+
+        button.innerText =
+            "✅ Place Order";
+
+    }
+
+}
+
+
+displaySummary();
+
+</script>
+
+</body>
+
+</html>

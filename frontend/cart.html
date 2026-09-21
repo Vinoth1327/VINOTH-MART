@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cart - Vinoth Mart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #e0f7ff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0288d1;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #0288d1;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0288d1;
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .item-price {
+            color: #0288d1;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .quantity-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: #03a9f4;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .quantity-btn:hover {
+            background: #0288d1;
+        }
+
+        .quantity {
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #d32f2f;
+        }
+
+        .total-box {
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: right;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .total {
+            font-size: 24px;
+            color: #0288d1;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            margin-top: 20px;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #03a9f4;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background: #0288d1;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        .loading {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        .local-label {
+            font-size: 12px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 600px) {
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .quantity-box {
+                width: 100%;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+
+            header {
+                padding: 18px 20px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🛒 Vinoth Mart
+    </div>
+
+    <button class="back-btn" onclick="goProducts()">
+        ← Continue Shopping
+    </button>
+
+</header>
+
+
+<div class="container">
+
+    <h1>🛒 Your Shopping Cart</h1>
+
+    <div id="cartItems">
+
+        <div class="loading">
+            Loading cart...
+        </div>
+
+    </div>
+
+
+    <div class="total-box">
+
+        <div class="total">
+            Total: ₹<span id="total">0</span>
+        </div>
+
+        <button class="checkout-btn" onclick="checkout()">
+            Proceed to Checkout
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const API = "http://127.0.0.1:8080";
+
+    let backendCart = [];
+    let localCart = [];
+
+    const loggedInUser =
+        JSON.parse(
+            localStorage.getItem("vinothLoggedInUser")
+        );
+
+
+    /*
+        Check buyer login
+    */
+
+    if (!loggedInUser || !loggedInUser.id) {
+
+        document.getElementById("cartItems").innerHTML = `
+
+            <div class="empty">
+
+                <h2>Please login first 🔐</h2>
+
+                <br>
+
+                <p>
+                    Login as a buyer to view your cart.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+    else {
+
+        loadCart();
+
+    }
+
+
+    /*
+        Load backend + local cart
+    */
+
+    async function loadCart() {
+
+        try {
+
+            /*
+                Load local cart
+            */
+
+            localCart =
+                JSON.parse(
+                    localStorage.getItem("vinothCart")
+                ) || [];
+
+
+            /*
+                Load backend cart
+            */
+
+            const response =
+                await fetch(
+                    API +
+                    "/api/cart?buyer_id=" +
+                    loggedInUser.id
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to load cart"
+                );
+
+            }
+
+
+            backendCart =
+                data.cart || [];
+
+
+            displayCart();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Load cart error:",
+                error
+            );
+
+
+            /*
+                If backend fails,
+                still show local cart.
+            */
+
+            localCart =
+                JSON.parse(
+                    localStorage.getItem("vinothCart")
+                ) || [];
+
+            backendCart = [];
+
+            displayCart();
+
+        }
+
+    }
+
+
+    /*
+        Display cart
+    */
+
+    function displayCart() {
+
+        const cartItems =
+            document.getElementById(
+                "cartItems"
+            );
+
+        const totalElement =
+            document.getElementById(
+                "total"
+            );
+
+
+        cartItems.innerHTML = "";
+
+        let total = 0;
+
+
+        /*
+            Backend cart products
+        */
+
+        backendCart.forEach(
+            (product, index) => {
+
+                const productName =
+                    product.name || "Product";
+
+                const productPrice =
+                    Number(product.price) || 0;
+
+                const quantity =
+                    Number(product.quantity) || 1;
+
+                total +=
+                    productPrice * quantity;
+
+
+                cartItems.innerHTML += `
+
+                    <div class="cart-item">
+
+                        <div>
+
+                            <div class="item-name">
+                                ${escapeHtml(productName)}
+                            </div>
+
+                            <div class="item-price">
+                                ₹${productPrice} × ${quantity}
+                            </div>
+
+                        </div>
+
+
+                        <div class="quantity-box">
+
+                            <button
+                                class="quantity-btn"
+                                onclick="changeBackendQuantity(${index}, -1)">
+                                −
+                            </button>
+
+                            <span class="quantity">
+                                ${quantity}
+                            </span>
+
+                            <button
+                                class="quantity-btn"
+                                onclick="changeBackendQuantity(${index}, 1)">
+                                +
+                            </button>
+
+                            <button
+                                class="remove-btn"
+                                onclick="removeBackendItem(${index})">
+                                Remove
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        /*
+            Local cart products
+        */
+
+        localCart.forEach(
+            (product, index) => {
+
+                const productName =
+                    product.name || "Product";
+
+                const productPrice =
+                    Number(product.price) || 0;
+
+                const quantity =
+                    Number(product.quantity) || 1;
+
+                total +=
+                    productPrice * quantity;
+
+
+                cartItems.innerHTML += `
+
+                    <div class="cart-item">
+
+                        <div>
+
+                            <div class="item-name">
+                                ${escapeHtml(productName)}
+                            </div>
+
+                            <div class="item-price">
+                                ₹${productPrice} × ${quantity}
+                            </div>
+
+                            <div class="local-label">
+                                Default Product
+                            </div>
+
+                        </div>
+
+
+                        <div class="quantity-box">
+
+                            <button
+                                class="quantity-btn"
+                                onclick="changeLocalQuantity(${index}, -1)">
+                                −
+                            </button>
+
+                            <span class="quantity">
+                                ${quantity}
+                            </span>
+
+                            <button
+                                class="quantity-btn"
+                                onclick="changeLocalQuantity(${index}, 1)">
+                                +
+                            </button>
+
+                            <button
+                                class="remove-btn"
+                                onclick="removeLocalItem(${index})">
+                                Remove
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        /*
+            Empty cart
+        */
+
+        if (
+            backendCart.length === 0 &&
+            localCart.length === 0
+        ) {
+
+            cartItems.innerHTML = `
+
+                <div class="empty">
+
+                    <h2>
+                        Your cart is empty 🛒
+                    </h2>
+
+                    <br>
+
+                    <p>
+                        Add some products to your cart.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        totalElement.innerText =
+            total.toFixed(2);
+
+    }
+
+
+    /*
+        Backend quantity change
+    */
+
+    async function changeBackendQuantity(
+        index,
+        change
+    ) {
+
+        const item =
+            backendCart[index];
+
+        if (!item) {
+            return;
+        }
+
+
+        const newQuantity =
+            Number(item.quantity) + change;
+
+
+        if (newQuantity <= 0) {
+
+            await removeBackendItem(index);
+
+            return;
+
+        }
+
+
+        if (
+            item.available_quantity &&
+            newQuantity >
+            Number(item.available_quantity)
+        ) {
+
+            alert(
+                "Not enough stock available!"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API + "/api/cart",
+                    {
+
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                buyer_id:
+                                    loggedInUser.id,
+
+                                product_id:
+                                    item.product_id,
+
+                                quantity:
+                                    newQuantity
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                alert(
+                    data.message ||
+                    "Unable to update quantity"
+                );
+
+                return;
+
+            }
+
+
+            await loadCart();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Quantity update error:",
+                error
+            );
+
+            alert(
+                "Unable to update cart."
+            );
+
+        }
+
+    }
+
+
+    /*
+        Remove backend product
+    */
+
+    async function removeBackendItem(index) {
+
+        const item =
+            backendCart[index];
+
+        if (!item) {
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API + "/api/cart",
+                    {
+
+                        method: "DELETE",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                buyer_id:
+                                    loggedInUser.id,
+
+                                product_id:
+                                    item.product_id
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                alert(
+                    data.message ||
+                    "Unable to remove product"
+                );
+
+                return;
+
+            }
+
+
+            await loadCart();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Remove cart error:",
+                error
+            );
+
+            alert(
+                "Unable to remove product."
+            );
+
+        }
+
+    }
+
+
+    /*
+        Local product quantity
+    */
+
+    function changeLocalQuantity(
+        index,
+        change
+    ) {
+
+        const item =
+            localCart[index];
+
+        if (!item) {
+            return;
+        }
+
+
+        const newQuantity =
+            Number(item.quantity) + change;
+
+
+        if (newQuantity <= 0) {
+
+            localCart.splice(index, 1);
+
+        }
+        else {
+
+            item.quantity =
+                newQuantity;
+
+        }
+
+
+        saveLocalCart();
+
+        displayCart();
+
+    }
+
+
+    /*
+        Remove local product
+    */
+
+    function removeLocalItem(index) {
+
+        localCart.splice(index, 1);
+
+        saveLocalCart();
+
+        displayCart();
+
+    }
+
+
+    /*
+        Save local cart
+    */
+
+    function saveLocalCart() {
+
+        localStorage.setItem(
+            "vinothCart",
+            JSON.stringify(localCart)
+        );
+
+    }
+
+
+    /*
+        Continue shopping
+    */
+
+    function goProducts() {
+
+        window.location.href =
+            "products.html";
+
+    }
+
+
+    /*
+        Checkout
+    */
+
+    function checkout() {
+
+        if (
+            backendCart.length === 0 &&
+            localCart.length === 0
+        ) {
+
+            alert(
+                "Your cart is empty!"
+            );
+
+            return;
+
+        }
+
+
+        /*
+            Store combined cart
+            for checkout page.
+        */
+
+        const combinedCart = [
+            ...backendCart,
+            ...localCart
+        ];
+
+
+        localStorage.setItem(
+            "vinothCheckoutCart",
+            JSON.stringify(combinedCart)
+        );
+
+
+        window.location.href =
+            "checkout.html";
+
+    }
+
+
+    /*
+        Prevent HTML injection
+    */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.innerText =
+            text;
+
+        return div.innerHTML;
+
+    }
+
+</script>
+
+</body>
+
+</html>

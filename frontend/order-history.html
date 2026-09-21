@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order History - Vinoth Mart</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f2faff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0288d1;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            background: #0277bd;
+            padding: 10px 16px;
+            border-radius: 7px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #message {
+            text-align: center;
+            padding: 20px;
+            color: #555;
+        }
+
+        .order {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0288d1;
+        }
+
+        .status {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .order-info {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .products {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .product {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product:last-child {
+            border-bottom: none;
+        }
+
+        .product-name {
+            font-weight: bold;
+        }
+
+        .product-details {
+            color: #555;
+        }
+
+        .total {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 19px;
+            font-weight: bold;
+            color: #0288d1;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            background: #0288d1;
+            color: white;
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🛒 Vinoth Mart</h1>
+    <a href="products.html">Continue Shopping</a>
+</header>
+
+
+<div class="container">
+
+    <h2>My Order History</h2>
+
+    <div id="message">
+        Loading orders...
+    </div>
+
+    <div id="orders"></div>
+
+</div>
+
+
+<script>
+
+const API = "http://127.0.0.1:8080";
+
+
+// =====================================================
+// LOAD BUYER
+// =====================================================
+
+const loggedInUser =
+    JSON.parse(
+        localStorage.getItem("vinothLoggedInUser")
+    );
+
+
+if (!loggedInUser) {
+
+    alert("Please login first.");
+
+    window.location.href =
+        "buyer.html";
+}
+
+
+// =====================================================
+// LOAD ORDERS
+// =====================================================
+
+async function loadOrders() {
+
+    const message =
+        document.getElementById("message");
+
+    const ordersContainer =
+        document.getElementById("orders");
+
+
+    try {
+
+        const response = await fetch(
+            API +
+            "/api/orders/buyer?buyer_id=" +
+            loggedInUser.id
+        );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Order history response:",
+            result
+        );
+
+
+        if (!result.success) {
+
+            message.textContent =
+                result.message ||
+                "Failed to load orders.";
+
+            return;
+        }
+
+
+        const orders =
+            result.orders || [];
+
+
+        message.style.display =
+            "none";
+
+
+        if (orders.length === 0) {
+
+            ordersContainer.innerHTML = `
+                <div class="empty">
+
+                    <h3>No Orders Yet</h3>
+
+                    <p>
+                        You haven't placed any orders yet.
+                    </p>
+
+                    <a
+                        href="products.html"
+                        class="shop-btn"
+                    >
+                        Start Shopping
+                    </a>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        ordersContainer.innerHTML = "";
+
+
+        orders.forEach(order => {
+
+            let productsHTML = "";
+
+
+            if (
+                order.products &&
+                order.products.length > 0
+            ) {
+
+                order.products.forEach(product => {
+
+                    const itemTotal =
+                        Number(product.price) *
+                        Number(product.quantity);
+
+
+                    productsHTML += `
+                        <div class="product">
+
+                            <div>
+
+                                <div class="product-name">
+                                    ${escapeHTML(
+                                        product.name
+                                    )}
+                                </div>
+
+                                <div class="product-details">
+                                    ₹${Number(
+                                        product.price
+                                    ).toFixed(2)}
+                                    ×
+                                    ${product.quantity}
+                                </div>
+
+                            </div>
+
+                            <div>
+                                ₹${itemTotal.toFixed(2)}
+                            </div>
+
+                        </div>
+                    `;
+                });
+
+            } else {
+
+                productsHTML = `
+                    <p>
+                        No product details available.
+                    </p>
+                `;
+            }
+
+
+            ordersContainer.innerHTML += `
+
+                <div class="order">
+
+                    <div class="order-header">
+
+                        <div class="order-id">
+                            Order #${order.id}
+                        </div>
+
+                        <div class="status">
+                            ${escapeHTML(
+                                order.status || "Placed"
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-info">
+
+                        <strong>Order Date:</strong>
+                        ${escapeHTML(
+                            order.date || "-"
+                        )}
+                        <br>
+
+                        <strong>Payment:</strong>
+                        ${escapeHTML(
+                            order.payment || "-"
+                        )}
+                        <br>
+
+                        <strong>Delivery Address:</strong>
+                        ${escapeHTML(
+                            order.address || "-"
+                        )},
+                        ${escapeHTML(
+                            order.city || ""
+                        )},
+                        ${escapeHTML(
+                            order.pincode || ""
+                        )}
+
+                    </div>
+
+
+                    <div class="products">
+
+                        <strong>
+                            Products
+                        </strong>
+
+                        ${productsHTML}
+
+                    </div>
+
+
+                    <div class="total">
+
+                        Total:
+                        ₹${Number(
+                            order.total || 0
+                        ).toFixed(2)}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Order history error:",
+            error
+        );
+
+
+        message.textContent =
+            "Cannot connect to backend.";
+
+    }
+}
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+}
+
+
+// =====================================================
+// START
+// =====================================================
+
+loadOrders();
+
+</script>
+
+</body>
+</html>

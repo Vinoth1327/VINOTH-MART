@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - Vinoth Mart</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #87ceeb, #e0f7ff);
+        }
+
+        .container {
+            width: 400px;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: #0288d1;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 10px;
+            background: #03a9f4;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            background: #0288d1;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0288d1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">
+            🛒 Vinoth Mart
+        </div>
+
+        <h2>Create Account</h2>
+
+        <p class="subtitle">
+            Register as Buyer or Seller
+        </p>
+
+        <form onsubmit="registerUser(event)">
+
+            <label for="name">
+                Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+                required
+            >
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <label for="role">
+                Account Type
+            </label>
+
+            <select id="role" required>
+
+                <option value="">
+                    Select account type
+                </option>
+
+                <option value="buyer">
+                    Buyer
+                </option>
+
+                <option value="seller">
+                    Seller
+                </option>
+
+            </select>
+
+            <button
+                type="submit"
+                class="register-btn">
+
+                Create Account
+
+            </button>
+
+        </form>
+
+        <a href="index.html" class="back">
+            ← Back to Vinoth Mart
+        </a>
+
+    </div>
+
+
+    <script>
+
+        async function registerUser(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById("name").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const role =
+                document.getElementById("role").value;
+
+
+            if (role === "") {
+
+                alert("Please select account type.");
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:8080/api/register",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                name: name,
+
+                                email: email,
+
+                                password: password,
+
+                                role: role
+
+                            })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (result.success) {
+
+                    alert(
+                        "🎉 Account created successfully!"
+                    );
+
+
+                    if (role === "buyer") {
+
+                        window.location.href =
+                            "buyer.html";
+
+                    } else {
+
+                        window.location.href =
+                            "seller.html";
+
+                    }
+
+                } else {
+
+                    alert(
+                        "❌ " + result.message
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+                alert(
+                    "❌ Cannot connect to Vinoth Mart server.\n\n" +
+                    "Please make sure the backend is running."
+                );
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
