@@ -1,0 +1,2192 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vinoth Mart</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* ================= LOGIN PAGE ================= */
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            background: white;
+            width: 400px;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px #ccc;
+        }
+
+        .logo {
+            text-align: center;
+            color: #1f6feb;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .role-title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .role-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .role-button {
+            padding: 12px 5px;
+            border: 2px solid #1f6feb;
+            border-radius: 8px;
+            background: white;
+            color: #1f6feb;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .role-button:hover,
+        .role-button.active {
+            background: #1f6feb;
+            color: white;
+        }
+
+        .selected-role {
+            text-align: center;
+            color: #1f6feb;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .login-box input,
+        .login-box select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            padding-right: 70px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #1f6feb;
+        }
+
+        .main-button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            background: #1f6feb;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .main-button:hover {
+            background: #1557b0;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .switch button {
+            border: none;
+            background: none;
+            color: #1f6feb;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* ================= SHOP PAGE ================= */
+
+        #shopPage {
+            display: none;
+        }
+
+        header {
+            background: #1f6feb;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px #ccc;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #1f6feb;
+            color: white;
+        }
+
+        .logout {
+            background: #dc3545;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .search-box {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 80%;
+            max-width: 500px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .product h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product p {
+            margin: 7px 0;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f6feb;
+        }
+
+        .product button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #198754;
+            color: white;
+            cursor: pointer;
+        }
+
+        .product button:hover {
+            background: #146c43;
+        }
+
+        /* ================= CART ================= */
+
+        .cart {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .cart-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-controls {
+            margin-top: 8px;
+        }
+
+        .cart-controls button {
+            padding: 5px 10px;
+            margin: 3px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #1f6feb;
+            color: white;
+        }
+
+        .remove-button {
+            background: #dc3545 !important;
+        }
+
+        .total {
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ================= DASHBOARD ================= */
+
+        .dashboard-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+            margin-top: 20px;
+        }
+
+        .dashboard-box button {
+            padding: 10px 20px;
+            margin: 10px 5px 0 0;
+            border: none;
+            border-radius: 5px;
+            background: #1f6feb;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1f6feb;
+            color: white;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 40px;
+            background: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 500px) {
+
+            .login-box {
+                width: 90%;
+            }
+
+            .role-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================================================= -->
+<!--                    LOGIN PAGE                     -->
+<!-- ================================================= -->
+
+<div class="login-container" id="loginPage">
+
+    <div class="login-box">
+
+        <h1 class="logo">
+            Vinoth Mart
+        </h1>
+
+        <p class="subtitle">
+            Your simple online marketplace
+        </p>
+
+
+        <!-- ROLE SELECTION -->
+
+        <div id="roleSelection">
+
+            <h3 class="role-title">
+                Login As
+            </h3>
+
+            <div class="role-buttons">
+
+                <button
+                    class="role-button"
+                    onclick="selectRole('Buyer')">
+                    Buyer
+                </button>
+
+                <button
+                    class="role-button"
+                    onclick="selectRole('Seller')">
+                    Seller
+                </button>
+
+                <button
+                    class="role-button"
+                    onclick="selectRole('Admin')">
+                    Admin
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN FORM -->
+
+        <div id="loginForm" style="display:none;">
+
+            <div class="selected-role">
+
+                <span id="selectedRoleText"></span>
+                Login
+
+            </div>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email">
+
+            <div class="password-container">
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Password">
+
+                <button
+                    class="show-password"
+                    onclick="togglePassword('loginPassword')">
+
+                    Show
+
+                </button>
+
+            </div>
+
+            <button
+                class="main-button"
+                onclick="login()">
+
+                Login
+
+            </button>
+
+            <button
+                class="back-button"
+                onclick="backToRoles()">
+
+                ← Change Login Type
+
+            </button>
+
+            <div
+                class="switch"
+                id="createAccountSwitch">
+
+                Don't have an account?
+
+                <button onclick="showRegister()">
+                    Create Account
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CREATE ACCOUNT -->
+
+        <div id="registerForm" style="display:none;">
+
+            <h2>
+                Create Account
+            </h2>
+
+            <input
+                type="text"
+                id="registerName"
+                placeholder="Full Name">
+
+            <input
+                type="email"
+                id="registerEmail"
+                placeholder="Email">
+
+            <div class="password-container">
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Password">
+
+                <button
+                    class="show-password"
+                    onclick="togglePassword('registerPassword')">
+
+                    Show
+
+                </button>
+
+            </div>
+
+            <select id="registerRole">
+
+                <option value="">
+                    Select Account Type
+                </option>
+
+                <option value="Buyer">
+                    Buyer
+                </option>
+
+                <option value="Seller">
+                    Seller
+                </option>
+
+            </select>
+
+            <button
+                class="main-button"
+                onclick="createAccount()">
+
+                Create Account
+
+            </button>
+
+            <div class="switch">
+
+                Already have an account?
+
+                <button onclick="showLogin()">
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!--                    SHOP PAGE                      -->
+<!-- ================================================= -->
+
+<div id="shopPage">
+
+    <header>
+
+        <h1>
+            Vinoth Mart
+        </h1>
+
+        <p id="welcomeMessage">
+            Welcome!
+        </p>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <button
+            id="buyerButton"
+            onclick="showBuyer()">
+
+            Buyer
+
+        </button>
+
+        <button
+            id="sellerButton"
+            onclick="showSeller()">
+
+            Seller
+
+        </button>
+
+        <button
+            id="adminButton"
+            onclick="showAdmin()">
+
+            Admin
+
+        </button>
+
+        <button
+            class="logout"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </nav>
+
+
+    <div class="container">
+
+
+        <!-- ================================================= -->
+        <!--                     BUYER                         -->
+        <!-- ================================================= -->
+
+        <div
+            id="buyerSection"
+            style="display:none;">
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search products..."
+                    onkeyup="searchProducts()">
+
+            </div>
+
+            <h2>
+                Available Products
+            </h2>
+
+            <div
+                class="products"
+                id="productList">
+            </div>
+
+
+            <!-- CART -->
+
+            <div class="cart">
+
+                <h2>
+                    Shopping Cart
+                </h2>
+
+                <br>
+
+                <div id="cartList">
+
+                    <p>
+                        Cart is empty.
+                    </p>
+
+                </div>
+
+                <div class="total">
+
+                    Total: ₹
+                    <span id="total">
+                        0
+                    </span>
+
+                </div>
+
+                <button
+                    class="main-button"
+                    onclick="placeOrder()">
+
+                    Place Order
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!--                     SELLER                        -->
+        <!-- ================================================= -->
+
+        <div
+            id="sellerSection"
+            style="display:none;">
+
+            <h2>
+                Seller Dashboard
+            </h2>
+
+            <div class="dashboard-box">
+
+                <h3>
+                    Add Product
+                </h3>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Product Name">
+
+                <input
+                    type="number"
+                    id="productPrice"
+                    placeholder="Price">
+
+                <input
+                    type="text"
+                    id="productCategory"
+                    placeholder="Category">
+
+                <button onclick="addProduct()">
+                    Add Product
+                </button>
+
+            </div>
+
+
+            <div class="dashboard-box">
+
+                <h3>
+                    My Products
+                </h3>
+
+                <div
+                    class="table-container"
+                    id="sellerProducts">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!--                     ADMIN                         -->
+        <!-- ================================================= -->
+
+        <div
+            id="adminSection"
+            style="display:none;">
+
+            <h2>
+                Admin Dashboard
+            </h2>
+
+            <div class="dashboard-box">
+
+                <h3>
+                    System Management
+                </h3>
+
+                <p>
+                    Admin can manage users, products and orders.
+                </p>
+
+                <button onclick="showUsers()">
+                    Manage Users
+                </button>
+
+                <button onclick="showAllProducts()">
+                    Manage Products
+                </button>
+
+                <button onclick="showOrders()">
+                    Manage Orders
+                </button>
+
+            </div>
+
+            <div
+                class="dashboard-box"
+                id="adminContent">
+
+                <p>
+                    Select an option above.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+        <p>
+            © 2026 Vinoth Mart
+        </p>
+
+    </footer>
+
+</div>
+
+
+<!-- ================================================= -->
+<!--                  JAVASCRIPT                       -->
+<!-- ================================================= -->
+
+<script>
+
+
+/* ================================================= */
+/*                 ACCOUNT DATA                      */
+/* ================================================= */
+
+let accounts = [
+
+    {
+        name: "Vinoth Mart Admin",
+        email: "admin@vinothmart.com",
+        password: "admin123",
+        role: "Admin"
+    }
+
+];
+
+
+let currentUser = null;
+
+let selectedRole = "";
+
+let cart = [];
+
+let orders = [];
+
+
+/* ================================================= */
+/*                 PRODUCT DATA                      */
+/* ================================================= */
+
+let products = [
+
+    {
+        id: 1,
+        name: "Rice",
+        price: 60,
+        category: "Grocery",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 2,
+        name: "Wheat Flour",
+        price: 50,
+        category: "Grocery",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 3,
+        name: "Milk",
+        price: 30,
+        category: "Dairy",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 4,
+        name: "Bread",
+        price: 40,
+        category: "Bakery",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 5,
+        name: "Apple",
+        price: 120,
+        category: "Fruits",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 6,
+        name: "Banana",
+        price: 50,
+        category: "Fruits",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 7,
+        name: "Tomato",
+        price: 45,
+        category: "Vegetables",
+        seller: "Vinoth Mart"
+    },
+
+    {
+        id: 8,
+        name: "Potato",
+        price: 40,
+        category: "Vegetables",
+        seller: "Vinoth Mart"
+    }
+
+];
+
+
+/* ================================================= */
+/*                 ROLE SELECTION                    */
+/* ================================================= */
+
+function selectRole(role) {
+
+    selectedRole = role;
+
+    document.getElementById("roleSelection")
+        .style.display = "none";
+
+    document.getElementById("loginForm")
+        .style.display = "block";
+
+    document.getElementById("registerForm")
+        .style.display = "none";
+
+    document.getElementById("selectedRoleText")
+        .innerText = role;
+
+    if (role === "Admin") {
+
+        document.getElementById("createAccountSwitch")
+            .style.display = "none";
+
+    }
+
+    else {
+
+        document.getElementById("createAccountSwitch")
+            .style.display = "block";
+
+    }
+
+}
+
+
+/* ================================================= */
+/*              BACK TO ROLE SELECTION               */
+/* ================================================= */
+
+function backToRoles() {
+
+    selectedRole = "";
+
+    document.getElementById("loginForm")
+        .style.display = "none";
+
+    document.getElementById("registerForm")
+        .style.display = "none";
+
+    document.getElementById("roleSelection")
+        .style.display = "block";
+
+    document.getElementById("loginEmail")
+        .value = "";
+
+    document.getElementById("loginPassword")
+        .value = "";
+
+}
+
+
+/* ================================================= */
+/*                 SHOW REGISTER                     */
+/* ================================================= */
+
+function showRegister() {
+
+    document.getElementById("loginForm")
+        .style.display = "none";
+
+    document.getElementById("registerForm")
+        .style.display = "block";
+
+}
+
+
+/* ================================================= */
+/*                   SHOW LOGIN                      */
+/* ================================================= */
+
+function showLogin() {
+
+    document.getElementById("registerForm")
+        .style.display = "none";
+
+    document.getElementById("loginForm")
+        .style.display = "block";
+
+}
+
+
+/* ================================================= */
+/*                CREATE ACCOUNT                     */
+/* ================================================= */
+
+function createAccount() {
+
+    let name =
+        document.getElementById("registerName")
+        .value.trim();
+
+    let email =
+        document.getElementById("registerEmail")
+        .value.trim();
+
+    let password =
+        document.getElementById("registerPassword")
+        .value;
+
+    let role =
+        document.getElementById("registerRole")
+        .value;
+
+
+    if (
+        name === "" ||
+        email === "" ||
+        password === "" ||
+        role === ""
+    ) {
+
+        alert("Please fill all fields.");
+
+        return;
+
+    }
+
+
+    let existingAccount =
+        accounts.find(function(user) {
+
+            return user.email === email;
+
+        });
+
+
+    if (existingAccount) {
+
+        alert("An account with this email already exists.");
+
+        return;
+
+    }
+
+
+    let newAccount = {
+
+        name: name,
+        email: email,
+        password: password,
+        role: role
+
+    };
+
+
+    accounts.push(newAccount);
+
+
+    alert(
+        "Account created successfully!\n\n" +
+        "You can now login as " + role + "."
+    );
+
+
+    document.getElementById("registerName")
+        .value = "";
+
+    document.getElementById("registerEmail")
+        .value = "";
+
+    document.getElementById("registerPassword")
+        .value = "";
+
+    document.getElementById("registerRole")
+        .value = "";
+
+    showLogin();
+
+}
+
+
+/* ================================================= */
+/*                     LOGIN                         */
+/* ================================================= */
+
+function login() {
+
+    let email =
+        document.getElementById("loginEmail")
+        .value.trim();
+
+    let password =
+        document.getElementById("loginPassword")
+        .value;
+
+
+    if (
+        email === "" ||
+        password === ""
+    ) {
+
+        alert(
+            "Please enter email and password."
+        );
+
+        return;
+
+    }
+
+
+    let account =
+        accounts.find(function(user) {
+
+            return (
+                user.email === email &&
+                user.password === password &&
+                user.role === selectedRole
+            );
+
+        });
+
+
+    if (!account) {
+
+        alert(
+            "Invalid " +
+            selectedRole +
+            " email or password."
+        );
+
+        return;
+
+    }
+
+
+    currentUser = account;
+
+
+    document.getElementById("loginPage")
+        .style.display = "none";
+
+    document.getElementById("shopPage")
+        .style.display = "block";
+
+
+    document.getElementById("welcomeMessage")
+        .innerText =
+        "Welcome, " +
+        account.name +
+        "!";
+
+
+    document.getElementById("buyerButton")
+        .style.display = "none";
+
+    document.getElementById("sellerButton")
+        .style.display = "none";
+
+    document.getElementById("adminButton")
+        .style.display = "none";
+
+
+    if (account.role === "Buyer") {
+
+        document.getElementById("buyerButton")
+            .style.display = "inline-block";
+
+        showBuyer();
+
+    }
+
+
+    else if (account.role === "Seller") {
+
+        document.getElementById("sellerButton")
+            .style.display = "inline-block";
+
+        showSeller();
+
+    }
+
+
+    else if (account.role === "Admin") {
+
+        document.getElementById("adminButton")
+            .style.display = "inline-block";
+
+        showAdmin();
+
+    }
+
+
+    alert("Login successful!");
+
+}
+
+
+/* ================================================= */
+/*              SHOW BUYER SECTION                   */
+/* ================================================= */
+
+function showBuyer() {
+
+    hideSections();
+
+    document.getElementById("buyerSection")
+        .style.display = "block";
+
+    displayProducts(products);
+
+}
+
+
+/* ================================================= */
+/*             SHOW SELLER SECTION                   */
+/* ================================================= */
+
+function showSeller() {
+
+    hideSections();
+
+    document.getElementById("sellerSection")
+        .style.display = "block";
+
+    displaySellerProducts();
+
+}
+
+
+/* ================================================= */
+/*              SHOW ADMIN SECTION                   */
+/* ================================================= */
+
+function showAdmin() {
+
+    hideSections();
+
+    document.getElementById("adminSection")
+        .style.display = "block";
+
+}
+
+
+/* ================================================= */
+/*                HIDE SECTIONS                      */
+/* ================================================= */
+
+function hideSections() {
+
+    document.getElementById("buyerSection")
+        .style.display = "none";
+
+    document.getElementById("sellerSection")
+        .style.display = "none";
+
+    document.getElementById("adminSection")
+        .style.display = "none";
+
+}
+
+
+/* ================================================= */
+/*                 DISPLAY PRODUCTS                  */
+/* ================================================= */
+
+function displayProducts(productArray) {
+
+    let productList =
+        document.getElementById("productList");
+
+    productList.innerHTML = "";
+
+
+    if (productArray.length === 0) {
+
+        productList.innerHTML =
+            "<p>No products found.</p>";
+
+        return;
+
+    }
+
+
+    productArray.forEach(function(product) {
+
+        let div =
+            document.createElement("div");
+
+        div.className = "product";
+
+
+        div.innerHTML = `
+
+            <h3>${product.name}</h3>
+
+            <p>
+                Category:
+                ${product.category}
+            </p>
+
+            <p class="price">
+                ₹${product.price}
+            </p>
+
+            <p>
+                Seller:
+                ${product.seller}
+            </p>
+
+            <button
+                onclick="addToCart(${product.id})">
+
+                Add to Cart
+
+            </button>
+
+        `;
+
+
+        productList.appendChild(div);
+
+    });
+
+}
+
+
+/* ================================================= */
+/*                 SEARCH PRODUCTS                   */
+/* ================================================= */
+
+function searchProducts() {
+
+    let searchText =
+        document.getElementById("search")
+        .value
+        .toLowerCase();
+
+
+    let filteredProducts =
+        products.filter(function(product) {
+
+            return (
+                product.name
+                    .toLowerCase()
+                    .includes(searchText) ||
+
+                product.category
+                    .toLowerCase()
+                    .includes(searchText)
+            );
+
+        });
+
+
+    displayProducts(filteredProducts);
+
+}
+
+
+/* ================================================= */
+/*                    ADD CART                       */
+/* ================================================= */
+
+function addToCart(productId) {
+
+    let product =
+        products.find(function(item) {
+
+            return item.id === productId;
+
+        });
+
+
+    if (!product) {
+
+        return;
+
+    }
+
+
+    let cartItem =
+        cart.find(function(item) {
+
+            return item.id === productId;
+
+        });
+
+
+    if (cartItem) {
+
+        cartItem.quantity++;
+
+    }
+
+    else {
+
+        cart.push({
+
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: 1
+
+        });
+
+    }
+
+
+    updateCart();
+
+
+    alert(
+        product.name +
+        " added to cart."
+    );
+
+}
+
+
+/* ================================================= */
+/*                  UPDATE CART                      */
+/* ================================================= */
+
+function updateCart() {
+
+    let cartList =
+        document.getElementById("cartList");
+
+    cartList.innerHTML = "";
+
+
+    if (cart.length === 0) {
+
+        cartList.innerHTML =
+            "<p>Cart is empty.</p>";
+
+        document.getElementById("total")
+            .innerText = "0";
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    cart.forEach(function(item) {
+
+        let itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+
+        let div =
+            document.createElement("div");
+
+        div.className = "cart-item";
+
+
+        div.innerHTML = `
+
+            <strong>
+                ${item.name}
+            </strong>
+
+            <p>
+                ₹${item.price} ×
+                ${item.quantity}
+                = ₹${itemTotal}
+            </p>
+
+            <div class="cart-controls">
+
+                <button
+                    onclick="decreaseQuantity(${item.id})">
+                    -
+                </button>
+
+                <button
+                    onclick="increaseQuantity(${item.id})">
+                    +
+                </button>
+
+                <button
+                    class="remove-button"
+                    onclick="removeFromCart(${item.id})">
+
+                    Remove
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        cartList.appendChild(div);
+
+    });
+
+
+    document.getElementById("total")
+        .innerText = total;
+
+}
+
+
+/* ================================================= */
+/*                INCREASE QUANTITY                  */
+/* ================================================= */
+
+function increaseQuantity(id) {
+
+    let item =
+        cart.find(function(product) {
+
+            return product.id === id;
+
+        });
+
+
+    if (item) {
+
+        item.quantity++;
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* ================================================= */
+/*                DECREASE QUANTITY                  */
+/* ================================================= */
+
+function decreaseQuantity(id) {
+
+    let item =
+        cart.find(function(product) {
+
+            return product.id === id;
+
+        });
+
+
+    if (!item) {
+
+        return;
+
+    }
+
+
+    item.quantity--;
+
+
+    if (item.quantity <= 0) {
+
+        removeFromCart(id);
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* ================================================= */
+/*                 REMOVE FROM CART                  */
+/* ================================================= */
+
+function removeFromCart(id) {
+
+    cart =
+        cart.filter(function(item) {
+
+            return item.id !== id;
+
+        });
+
+
+    updateCart();
+
+}
+
+
+/* ================================================= */
+/*                   PLACE ORDER                     */
+/* ================================================= */
+
+function placeOrder() {
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty.");
+
+        return;
+
+    }
+
+
+    let total =
+        cart.reduce(function(sum, item) {
+
+            return sum +
+                item.price * item.quantity;
+
+        }, 0);
+
+
+    let order = {
+
+        id: orders.length + 1,
+
+        customer:
+            currentUser.name,
+
+        email:
+            currentUser.email,
+
+        items:
+            JSON.parse(JSON.stringify(cart)),
+
+        total:
+            total,
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+
+    orders.push(order);
+
+
+    alert(
+        "Order placed successfully!\n\n" +
+        "Order ID: " +
+        order.id +
+        "\nTotal: ₹" +
+        total
+    );
+
+
+    cart = [];
+
+    updateCart();
+
+}
+
+
+/* ================================================= */
+/*                  ADD PRODUCT                      */
+/* ================================================= */
+
+function addProduct() {
+
+    let name =
+        document.getElementById("productName")
+        .value.trim();
+
+    let price =
+        Number(
+            document.getElementById("productPrice")
+            .value
+        );
+
+    let category =
+        document.getElementById("productCategory")
+        .value.trim();
+
+
+    if (
+        name === "" ||
+        price <= 0 ||
+        category === ""
+    ) {
+
+        alert(
+            "Please enter valid product details."
+        );
+
+        return;
+
+    }
+
+
+    let newProduct = {
+
+        id:
+            products.length > 0
+                ? Math.max(
+                    ...products.map(p => p.id)
+                  ) + 1
+                : 1,
+
+        name: name,
+
+        price: price,
+
+        category: category,
+
+        seller:
+            currentUser.name
+
+    };
+
+
+    products.push(newProduct);
+
+
+    document.getElementById("productName")
+        .value = "";
+
+    document.getElementById("productPrice")
+        .value = "";
+
+    document.getElementById("productCategory")
+        .value = "";
+
+
+    alert(
+        "Product added successfully!"
+    );
+
+
+    displaySellerProducts();
+
+}
+
+
+/* ================================================= */
+/*             DISPLAY SELLER PRODUCTS               */
+/* ================================================= */
+
+function displaySellerProducts() {
+
+    let container =
+        document.getElementById("sellerProducts");
+
+
+    let sellerProducts =
+        products.filter(function(product) {
+
+            return product.seller === currentUser.name ||
+                   product.seller === "Vinoth Mart";
+
+        });
+
+
+    if (sellerProducts.length === 0) {
+
+        container.innerHTML =
+            "<p>No products available.</p>";
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Action</th>
+
+            </tr>
+
+    `;
+
+
+    sellerProducts.forEach(function(product) {
+
+        html += `
+
+            <tr>
+
+                <td>
+                    ${product.id}
+                </td>
+
+                <td>
+                    ${product.name}
+                </td>
+
+                <td>
+                    ${product.category}
+                </td>
+
+                <td>
+                    ₹${product.price}
+                </td>
+
+                <td>
+
+                    <button
+                        onclick="deleteProduct(${product.id})">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += "</table>";
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* ================================================= */
+/*                DELETE PRODUCT                     */
+/* ================================================= */
+
+function deleteProduct(id) {
+
+    let confirmation =
+        confirm(
+            "Are you sure you want to delete this product?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    products =
+        products.filter(function(product) {
+
+            return product.id !== id;
+
+        });
+
+
+    displaySellerProducts();
+
+    alert(
+        "Product deleted successfully."
+    );
+
+}
+
+
+/* ================================================= */
+/*                 ADMIN - USERS                     */
+/* ================================================= */
+
+function showUsers() {
+
+    let content =
+        document.getElementById("adminContent");
+
+
+    let html = `
+
+        <h3>User Management</h3>
+
+        <div class="table-container">
+
+        <table>
+
+            <tr>
+
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+
+            </tr>
+
+    `;
+
+
+    accounts.forEach(function(user) {
+
+        html += `
+
+            <tr>
+
+                <td>
+                    ${user.name}
+                </td>
+
+                <td>
+                    ${user.email}
+                </td>
+
+                <td>
+                    ${user.role}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+        </table>
+
+        </div>
+
+    `;
+
+
+    content.innerHTML = html;
+
+}
+
+
+/* ================================================= */
+/*              ADMIN - PRODUCTS                     */
+/* ================================================= */
+
+function showAllProducts() {
+
+    let content =
+        document.getElementById("adminContent");
+
+
+    let html = `
+
+        <h3>Product Management</h3>
+
+        <div class="table-container">
+
+        <table>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Seller</th>
+
+            </tr>
+
+    `;
+
+
+    products.forEach(function(product) {
+
+        html += `
+
+            <tr>
+
+                <td>
+                    ${product.id}
+                </td>
+
+                <td>
+                    ${product.name}
+                </td>
+
+                <td>
+                    ${product.category}
+                </td>
+
+                <td>
+                    ₹${product.price}
+                </td>
+
+                <td>
+                    ${product.seller}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+        </table>
+
+        </div>
+
+    `;
+
+
+    content.innerHTML = html;
+
+}
+
+
+/* ================================================= */
+/*                ADMIN - ORDERS                     */
+/* ================================================= */
+
+function showOrders() {
+
+    let content =
+        document.getElementById("adminContent");
+
+
+    if (orders.length === 0) {
+
+        content.innerHTML = `
+
+            <h3>Order Management</h3>
+
+            <p>
+                No orders have been placed yet.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <h3>Order Management</h3>
+
+        <div class="table-container">
+
+        <table>
+
+            <tr>
+
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Date</th>
+
+            </tr>
+
+    `;
+
+
+    orders.forEach(function(order) {
+
+        html += `
+
+            <tr>
+
+                <td>
+                    #${order.id}
+                </td>
+
+                <td>
+                    ${order.customer}
+                </td>
+
+                <td>
+                    ₹${order.total}
+                </td>
+
+                <td>
+                    ${order.date}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+        </table>
+
+        </div>
+
+    `;
+
+
+    content.innerHTML = html;
+
+}
+
+
+/* ================================================= */
+/*                PASSWORD TOGGLE                    */
+/* ================================================= */
+
+function togglePassword(id) {
+
+    let passwordInput =
+        document.getElementById(id);
+
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+    }
+
+    else {
+
+        passwordInput.type = "password";
+
+    }
+
+}
+
+
+/* ================================================= */
+/*                    LOGOUT                         */
+/* ================================================= */
+
+function logout() {
+
+    currentUser = null;
+
+    cart = [];
+
+    selectedRole = "";
+
+
+    document.getElementById("shopPage")
+        .style.display = "none";
+
+
+    document.getElementById("loginPage")
+        .style.display = "flex";
+
+
+    document.getElementById("loginForm")
+        .style.display = "none";
+
+
+    document.getElementById("registerForm")
+        .style.display = "none";
+
+
+    document.getElementById("roleSelection")
+        .style.display = "block";
+
+
+    document.getElementById("loginEmail")
+        .value = "";
+
+    document.getElementById("loginPassword")
+        .value = "";
+
+
+    alert("You have been logged out.");
+
+}
+
+
+</script>
+
+</body>
+
+</html>
+```
+`
